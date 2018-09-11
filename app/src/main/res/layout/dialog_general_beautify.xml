@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_alert_dialog"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="title"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:lineSpacingExtra="3dp"
+            android:text="内容"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <com.example.naruto.guidetosettingboot.MaskLayerButton
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="No"
+            android:textColor="@color/text_tv_grey"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:constraintRadiusWithHeight_percent="0.5"
+            app:strokeColor="@color/text_tv_grey" />
+
+        <View
+            android:id="@+id/v_space"
+            android:layout_width="20dp"
+            android:layout_height="0dp" />
+
+        <com.example.naruto.guidetosettingboot.MaskLayerButton
+            android:id="@+id/okButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="Yes"
+            android:textColor="@color/text_tv_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:constraintRadiusWithHeight_percent="0.5"
+            app:strokeColor="@color/text_tv_blue" />
+
+    </LinearLayout>
+
+</LinearLayout>

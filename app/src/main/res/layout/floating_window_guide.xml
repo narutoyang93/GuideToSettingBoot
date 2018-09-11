@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B0000000"
+    android:padding="10dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_slide_up"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/slide_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.15" />
+
+        <TextView
+            android:id="@+id/tv_step_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="第一步：关闭“犀牛云客”自动管理"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/iv_slide_up" />
+
+        <com.example.naruto.guidetosettingboot.FilletedCornerStrokeImageView
+            android:id="@+id/iv_step_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:src="@drawable/boot_setting_switch_huawei"
+            app:layout_constraintTop_toBottomOf="@id/tv_step_one"
+            app:radius="15dp"
+            app:strokeColor="@color/white"
+            app:strokeType="dash"
+            app:strokeWidth="2dp" />
+
+        <ImageView
+            android:id="@+id/iv_guide_position"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/guide_position"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/iv_step_one"
+            app:layout_constraintWidth_percent="0.08" />
+
+        <TextView
+            android:id="@+id/tv_step_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="第二步：开启“允许自启动”、“允许关联启动”、“允许后台活动”"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/iv_guide_position" />
+
+        <com.example.naruto.guidetosettingboot.FilletedCornerStrokeImageView
+            android:id="@+id/iv_step_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:src="@drawable/boot_setting_switch_huawei_step2"
+            app:layout_constraintTop_toBottomOf="@id/tv_step_two"
+            app:radius="15dp"
+            app:strokeColor="@color/white"
+            app:strokeType="dash"
+            app:strokeWidth="2dp" />
+
+        <com.example.naruto.guidetosettingboot.MaskLayerButton
+            android:id="@+id/bt_go_setting"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/text_tv_blue"
+            android:text="去设置"
+            android:textColor="@color/white"
+            app:constraintRadiusWithHeight_percent="0.5"
+            app:layout_constraintDimensionRatio="H,4:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_step_two"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="54dp" />
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

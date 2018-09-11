@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--通用属性-->
+    <!--圆角半径-->
+    <attr name="radius" format="dimension"></attr>
+    <!--根据比例设置圆角半径-->
+    <attr name="constraintRadiusWithWidth_percent" format="float"></attr>
+    <attr name="constraintRadiusWithHeight_percent" format="float"></attr>
+    <!--描边画笔宽度-->
+    <attr name="strokeWidth" format="dimension"></attr>
+    <!--描边颜色-->
+    <attr name="strokeColor" format="color"></attr>
+    <!--描边类型-->
+    <attr name="strokeType" format="enum">
+        <enum name="solid" value="0"></enum>
+        <enum name="dash" value="1"></enum>
+    </attr>
+    <!--虚线点与点间隔-->
+    <attr name="strokeDashSize" format="dimension"></attr>
+
+
+    <declare-styleable name="MaskLayerButton">
+        <!--圆角半径-->
+        <attr name="radius"></attr>
+        <attr name="constraintRadiusWithWidth_percent"></attr>
+        <attr name="constraintRadiusWithHeight_percent"></attr>
+        <!--是否需要遮罩层-->
+        <attr name="needMaskLayer" format="boolean"></attr>
+        <!--遮罩层颜色-->
+        <attr name="maskLayerColor" format="color"></attr>
+        <!--描边画笔宽度-->
+        <attr name="strokeWidth"></attr>
+        <!--描边颜色-->
+        <attr name="strokeColor"></attr>
+        <!--描边类型-->
+        <attr name="strokeType"></attr>
+        <!--虚线间隔-->
+        <attr name="strokeDashSize"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="FilletedCornerStrokeImageView">
+        <!--圆角半径-->
+        <attr name="radius"></attr>
+        <attr name="constraintRadiusWithWidth_percent"></attr>
+        <attr name="constraintRadiusWithHeight_percent"></attr>
+        <!--描边画笔宽度-->
+        <attr name="strokeWidth"></attr>
+        <!--描边颜色-->
+        <attr name="strokeColor"></attr>
+        <!--描边类型-->
+        <attr name="strokeType"></attr>
+        <!--虚线间隔-->
+        <attr name="strokeDashSize"></attr>
+    </declare-styleable>
+
+</resources>
