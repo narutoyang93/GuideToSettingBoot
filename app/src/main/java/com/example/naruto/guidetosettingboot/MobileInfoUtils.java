@@ -1,10 +1,12 @@
 package com.example.naruto.guidetosettingboot;
 
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -114,11 +117,14 @@ public class MobileInfoUtils {
     private static void openGuideFloatingWindow(Context context) {
         final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//8.0及以上
             mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        }else {
-            mParams.type =  WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {//7.0以上
+            mParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        } else {
+            mParams.type = WindowManager.LayoutParams.TYPE_TOAST;//这个无需悬浮窗权限
         }
+
         mParams.format = PixelFormat.TRANSLUCENT;// 支持透明
         //mParams.format = PixelFormat.RGBA_8888;
         //mParams.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;// 焦点
@@ -208,16 +214,18 @@ public class MobileInfoUtils {
                 return false;
             }
         } else {
+            boolean result = true;
             if (Build.VERSION.SDK_INT >= 26) {//8.0以上
                 AppOpsManager appOpsMgr = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-                if (appOpsMgr == null)
-                    return false;
-                int mode = appOpsMgr.checkOpNoThrow("android:system_alert_window", android.os.Process.myUid(), context
-                        .getPackageName());
-                return mode == AppOpsManager.MODE_ALLOWED || mode == AppOpsManager.MODE_IGNORED;
-            } else {
-                return Settings.canDrawOverlays(context);
+                if (appOpsMgr == null) {
+                    result = false;
+                } else {
+                    int mode = appOpsMgr.checkOpNoThrow("android:system_alert_window", android.os.Process.myUid(), context
+                            .getPackageName());
+                    result = mode == AppOpsManager.MODE_ALLOWED || mode == AppOpsManager.MODE_IGNORED;
+                }
             }
+            return result && Settings.canDrawOverlays(context);
         }
     }
 
@@ -286,6 +294,78 @@ public class MobileInfoUtils {
                 Log.e(TAG, "jumpStartInterface: 跳转失败");
                 intent = new Intent(Settings.ACTION_SETTINGS);
                 context.startActivity(intent);
+            }
+        }
+    }
+
+    /**
+     * @Purpose 
+     * @Author Naruto Yang
+     * @CreateDate 2018/9/12 0012
+     * @Note
+     */
+    public static class BootSettingHelper {
+        private ComponentName componentName;
+        private Activity activity;
+
+        public BootSettingHelper(Activity activity) {
+            this.activity = activity;
+        }
+
+        /**
+         * 引导用户设置开机自启
+         */
+        public void guideToBootSetting(boolean isNeedDialog, final int requestCode) {
+            componentName = MobileInfoUtils.getBootSettingComponentName();
+            if (componentName != null) {
+                if (isNeedDialog) {
+                    DialogUtils.showDialog(activity, true, activity.getString(R.string.app_name) + "提示", "为保证正常收到消息通知，需要开启重要权限", true, "开启", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            guideToBootSetting(requestCode);
+                        }
+                    }, null);
+                } else {
+                    guideToBootSetting(requestCode);
+                }
+            }
+        }
+
+        private void guideToBootSetting(final int requestCode) {
+            if (MobileInfoUtils.checkFloatPermission(activity)) {
+                MobileInfoUtils.jumpToBootSettingActivity(activity, componentName);
+            } else {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                    DialogUtils.showDialog(activity, true, "开启悬浮窗权限", "请在下一个页面找到“显示悬浮窗”或“在其他应用上层显示”选项开关,并开启", true, "确定", null, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            activity.startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName())), requestCode);
+                        }
+                    }, null);
+                } else {//7.0及以下无需悬浮窗权限
+                    MobileInfoUtils.jumpToBootSettingActivity(activity, componentName);
+                }
+            }
+            //MobileInfoUtils.jumpToBootSettingActivity(MainActivity.this, componentName);
+        }
+
+        /**
+         * 申请悬浮窗权限页面返回
+         */
+        public void afterRequestFloatWindowPeermission() {
+            if (MobileInfoUtils.checkFloatPermission(activity)) {
+                MobileInfoUtils.jumpToBootSettingActivity(activity, componentName);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (MobileInfoUtils.checkFloatPermission(activity)) {
+                            MobileInfoUtils.jumpToBootSettingActivity(activity, componentName);
+                        } else {
+                            Toast.makeText(activity, "悬浮窗权限未开启", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, 500);
             }
         }
     }
