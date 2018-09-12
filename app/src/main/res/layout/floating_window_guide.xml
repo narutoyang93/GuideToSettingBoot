@@ -16,6 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:paddingBottom="20dp"
             android:src="@drawable/slide_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,16 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@id/iv_step_one"
             app:layout_constraintWidth_percent="0.08" />
+
+        <TextView
+            android:id="@+id/tv_step_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="开启“犀牛云客”的自启动开关"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/iv_step_one" />
 
         <TextView
             android:id="@+id/tv_step_two"

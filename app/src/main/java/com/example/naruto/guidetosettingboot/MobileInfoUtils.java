@@ -140,11 +140,12 @@ public class MobileInfoUtils {
         String mobileType = getMobileType().toLowerCase();
         if (mobileType.equals("huawei")) {
             contentView.findViewById(R.id.iv_slide_up).setVisibility(View.GONE);
+            contentView.findViewById(R.id.tv_step_open).setVisibility(View.GONE);
         } else {
             contentView.findViewById(R.id.tv_step_two).setVisibility(View.GONE);
             contentView.findViewById(R.id.iv_step_two).setVisibility(View.GONE);
-            TextView tv = (TextView) contentView.findViewById(R.id.tv_step_one);
-            tv.setText("滑动列表找到“" + context.getString(R.string.app_name) + "”");
+            TextView tvStepOne = (TextView) contentView.findViewById(R.id.tv_step_one);
+            tvStepOne.setText("滑动列表找到“" + context.getString(R.string.app_name) + "”");
             FilletedCornerStrokeImageView iv = (FilletedCornerStrokeImageView) contentView.findViewById(R.id.iv_step_one);
             switch (mobileType) {
                 case "xiaomi":
@@ -299,7 +300,7 @@ public class MobileInfoUtils {
     }
 
     /**
-     * @Purpose 
+     * @Purpose
      * @Author Naruto Yang
      * @CreateDate 2018/9/12 0012
      * @Note
@@ -312,11 +313,24 @@ public class MobileInfoUtils {
             this.activity = activity;
         }
 
+        public void initComponentName() {
+            componentName = MobileInfoUtils.getBootSettingComponentName();
+        }
+
+        public ComponentName getComponentName() {
+            return componentName;
+        }
+
         /**
          * 引导用户设置开机自启
+         *
+         * @param isNeedDialog 在引导前是否需要弹窗提示用户前往（自动调用时需要，若是用户手动点击“权限设置”则不需要）
+         * @param requestCode  申请悬浮窗权限的requestCode
          */
         public void guideToBootSetting(boolean isNeedDialog, final int requestCode) {
-            componentName = MobileInfoUtils.getBootSettingComponentName();
+            if (componentName == null) {
+                initComponentName();
+            }
             if (componentName != null) {
                 if (isNeedDialog) {
                     DialogUtils.showDialog(activity, true, activity.getString(R.string.app_name) + "提示", "为保证正常收到消息通知，需要开启重要权限", true, "开启", "取消", new View.OnClickListener() {
@@ -331,6 +345,11 @@ public class MobileInfoUtils {
             }
         }
 
+        /**
+         * 引导用户设置开机自启
+         *
+         * @param requestCode 申请悬浮窗权限的requestCode
+         */
         private void guideToBootSetting(final int requestCode) {
             if (MobileInfoUtils.checkFloatPermission(activity)) {
                 MobileInfoUtils.jumpToBootSettingActivity(activity, componentName);
