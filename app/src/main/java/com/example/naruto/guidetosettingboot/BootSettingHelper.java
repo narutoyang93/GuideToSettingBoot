@@ -18,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * @Purpose
  * @Author Naruto Yang
@@ -33,6 +35,10 @@ public class BootSettingHelper {
 
     public BootSettingHelper(Activity activity) {
         this.activity = activity;
+    }
+
+    public void initComponentName() {
+        componentName = getBootSettingComponentName();
     }
 
     private void initHomeListener() {
@@ -67,21 +73,29 @@ public class BootSettingHelper {
      */
     public void guideToBootSetting(boolean isNeedDialog, final int requestCode) {
         if (componentName == null) {
-            componentName = getBootSettingComponentName();
+            initComponentName();
         }
         if (componentName != null) {
             if (isNeedDialog) {
-                DialogUtils.showDialog(activity, true, activity.getString(R.string.app_name) + "提示", "为保证正常收到消息通知，需要开启重要权限", true, "开启", "取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        guideToBootSetting(requestCode);
-                    }
-                }, null);
+                DialogUtils.showDialog(activity, true, activity.getString(R.string.app_name) + "提示", "为保证正常收到消息通知，需要开启重要权限", false, "开启", "取消",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                guideToBootSetting(requestCode);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String message = "您已取消本次权限设置，后续可前往“我”>“个人信息”>“权限设置”重新设置";
+                                DialogUtils.showDialog(activity, true, null, message, true, "确定", null, null, null);
+                            }
+                        });
             } else {
                 guideToBootSetting(requestCode);
             }
         }
     }
+
 
     /**
      * 引导用户设置开机自启
@@ -93,7 +107,7 @@ public class BootSettingHelper {
             jumpToBootSettingActivity(activity, componentName, this);
         } else {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                DialogUtils.showDialog(activity, true, "开启悬浮窗权限", "请在下一个页面找到“显示悬浮窗”或“在其他应用上层显示”选项开关,并开启", true, "确定", null, new View.OnClickListener() {
+                DialogUtils.showDialog(activity, true, "开启悬浮窗权限", "请在下一个页面找到“显示悬浮窗”或“在其他应用上层显示”选项开关,并开启", false, "确定", null, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         activity.startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName())), requestCode);
@@ -126,6 +140,9 @@ public class BootSettingHelper {
         }
     }
 
+    /**
+     * 移除引导遮罩层
+     */
     private void hideGuideWindow() {
         if (guideWindowView != null) {
             try {
@@ -152,6 +169,9 @@ public class BootSettingHelper {
         homeListener.startListen();
     }
 
+    public HomeListener getHomeListener() {
+        return homeListener;
+    }
 
     /**
      * @return
@@ -294,8 +314,10 @@ public class BootSettingHelper {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wm != null && contentView != null && contentView.getParent() != null)
+                if (wm != null && contentView != null && contentView.getParent() != null) {
                     wm.removeView(contentView);//移除窗口
+                    EventBus.getDefault().post(new BootSettingEvent());
+                }
             }
         });
         try {
@@ -308,12 +330,13 @@ public class BootSettingHelper {
     }
 
     /**
+     * 此方法已过时，但还有点参考价值
      * GoTo Open Self Setting Layout
      * Compatible Mainstream Models 兼容市面主流机型
      *
      * @param context
      */
-    public static void jumpStartInterface(Context context) {
+    private static void jumpStartInterface(Context context) {
         Intent intent = new Intent();
         String mobileType = MobileInfoUtils.getMobileType();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
