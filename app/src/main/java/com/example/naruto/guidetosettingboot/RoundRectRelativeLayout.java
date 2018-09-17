@@ -7,29 +7,29 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 /**
- * @Purpose 支持圆角和描边，无需自定义shape
+ * @Purpose
  * @Author Naruto Yang
- * @CreateDate 2018/9/8 0008
+ * @CreateDate 2018/9/15 0015
  * @Note
  */
-public class FilletedCornerStrokeImageView extends android.support.v7.widget.AppCompatImageView {
+public class RoundRectRelativeLayout extends RelativeLayout {
     private Context context;
     private CustomViewHelper customViewHelper;
 
-    public FilletedCornerStrokeImageView(Context context) {
+    public RoundRectRelativeLayout(Context context) {
         super(context);
-        this.context = context;
     }
 
-    public FilletedCornerStrokeImageView(Context context, AttributeSet attrs) {
+    public RoundRectRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init(attrs);
     }
 
-    public FilletedCornerStrokeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundRectRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init(attrs);
@@ -39,20 +39,22 @@ public class FilletedCornerStrokeImageView extends android.support.v7.widget.App
     }
 
     public void init(AttributeSet attrs) {
-        customViewHelper = new CustomViewHelper(context, "FilletedCornerStrokeImageView", this);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FilletedCornerStrokeImageView);
+        setWillNotDraw(false);
+        customViewHelper = new CustomViewHelper(context, "RoundRectRelativeLayout", this);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RoundRectRelativeLayout);
         //从TypedArray中取出对应的值来为要设置的属性赋值
         customViewHelper.getAttrs(ta);
         ta.recycle();
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
         customViewHelper.setRadiusByPercent();
+        customViewHelper.makeBackgroundRoundRect(paint, canvas);
         customViewHelper.drawStroke(paint, canvas);
         customViewHelper.makeToRoundRect(canvas);
         super.onDraw(canvas);
     }
-
 }

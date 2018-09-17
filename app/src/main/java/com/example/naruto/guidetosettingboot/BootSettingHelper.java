@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -279,15 +280,19 @@ public class BootSettingHelper {
         final View button = contentView.findViewById(R.id.bt_go_setting);
         contentView.setFocusableInTouchMode(true);
         String mobileType = MobileInfoUtils.getMobileType().toLowerCase();
+        TextView tvStepOne = (TextView) contentView.findViewById(R.id.tv_step_one);
+        TextView tvOpen = (TextView) contentView.findViewById(R.id.tv_step_open);
         if (mobileType.equals("huawei")) {
             contentView.findViewById(R.id.iv_slide_up).setVisibility(View.GONE);
-            contentView.findViewById(R.id.tv_step_open).setVisibility(View.GONE);
+            tvOpen.setVisibility(View.GONE);
+            tvStepOne.setText("第一步：关闭“" + context.getString(R.string.app_name) + "”自动管理");
         } else {
+            contentView.findViewById(R.id.tv_huawei).setVisibility(View.GONE);
             contentView.findViewById(R.id.tv_step_two).setVisibility(View.GONE);
             contentView.findViewById(R.id.iv_step_two).setVisibility(View.GONE);
-            TextView tvStepOne = (TextView) contentView.findViewById(R.id.tv_step_one);
             tvStepOne.setText("滑动列表找到“" + context.getString(R.string.app_name) + "”");
-            FilletedCornerStrokeImageView iv = (FilletedCornerStrokeImageView) contentView.findViewById(R.id.iv_step_one);
+            tvOpen.setText("开启“" + context.getString(R.string.app_name) + "”的自启动开关");
+            ImageView iv = (ImageView) contentView.findViewById(R.id.iv_switch);
             switch (mobileType) {
                 case "xiaomi":
                     iv.setImageResource(R.drawable.boot_setting_switch_xiaomi);

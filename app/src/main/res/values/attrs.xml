@@ -15,42 +15,48 @@
         <enum name="solid" value="0"></enum>
         <enum name="dash" value="1"></enum>
     </attr>
-    <!--虚线点与点间隔-->
-    <attr name="strokeDashSize" format="dimension"></attr>
-
+    <!--虚线线段程度-->
+    <attr name="strokeDashLength" format="dimension"></attr>
+    <!--虚线线段间隔-->
+    <attr name="strokeDashInterval" format="dimension"></attr>
+    <attr name="drawableWidth" format="dimension" />
+    <attr name="drawableHeight" format="dimension" />
 
     <declare-styleable name="MaskLayerButton">
-        <!--圆角半径-->
+        <!--是否需要遮罩层-->
+        <attr name="needMaskLayer" format="boolean"></attr>
         <attr name="radius"></attr>
         <attr name="constraintRadiusWithWidth_percent"></attr>
         <attr name="constraintRadiusWithHeight_percent"></attr>
-        <!--是否需要遮罩层-->
-        <attr name="needMaskLayer" format="boolean"></attr>
-        <!--遮罩层颜色-->
         <attr name="maskLayerColor" format="color"></attr>
-        <!--描边画笔宽度-->
         <attr name="strokeWidth"></attr>
-        <!--描边颜色-->
         <attr name="strokeColor"></attr>
-        <!--描边类型-->
         <attr name="strokeType"></attr>
-        <!--虚线间隔-->
-        <attr name="strokeDashSize"></attr>
+        <attr name="strokeDashLength"></attr>
+        <attr name="strokeDashInterval"></attr>
+
     </declare-styleable>
 
     <declare-styleable name="FilletedCornerStrokeImageView">
-        <!--圆角半径-->
         <attr name="radius"></attr>
         <attr name="constraintRadiusWithWidth_percent"></attr>
         <attr name="constraintRadiusWithHeight_percent"></attr>
-        <!--描边画笔宽度-->
         <attr name="strokeWidth"></attr>
-        <!--描边颜色-->
         <attr name="strokeColor"></attr>
-        <!--描边类型-->
         <attr name="strokeType"></attr>
-        <!--虚线间隔-->
-        <attr name="strokeDashSize"></attr>
+        <attr name="strokeDashLength"></attr>
+        <attr name="strokeDashInterval"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundRectRelativeLayout">
+        <attr name="radius"></attr>
+        <attr name="constraintRadiusWithWidth_percent"></attr>
+        <attr name="constraintRadiusWithHeight_percent"></attr>
+        <attr name="strokeWidth"></attr>
+        <attr name="strokeColor"></attr>
+        <attr name="strokeType"></attr>
+        <attr name="strokeDashLength"></attr>
+        <attr name="strokeDashInterval"></attr>
     </declare-styleable>
 
 </resources>
